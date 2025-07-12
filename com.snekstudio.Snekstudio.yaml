@@ -1,0 +1,50 @@
+app-id: com.snekstudio.Snekstudio
+runtime: org.freedesktop.Platform
+runtime-version: "24.08"
+sdk: org.freedesktop.Sdk
+base: org.godotengine.godot.BaseApp
+base-version: "4.4"
+command: snekstudio
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=pulseaudio
+  - --device=all
+modules:
+  - name: snekstudio
+    buildsystem: "simple"
+    build-commands:
+      - install -Dm644 snekstudio.pck ${FLATPAK_DEST}/bin/godot-runner.pck
+      - ls
+      - install -Dm755 snekstudio.sh ${FLATPAK_DEST}/bin/snekstudio
+      - cp -r Mods ${FLATPAK_DEST}/bin
+      - cp -r SampleModels ${FLATPAK_DEST}/bin
+    post-install:
+      - install -D com.snekstudio.Snekstudio.desktop -t  /app/share/applications/
+      - install -D com.snekstudio.Snekstudio.metainfo.xml -t /app/share/applications/
+      - install -D kiri_smug.png  /app/share/icons/hicolor/512x512/apps/$FLATPAK_ID.png.png
+    sources:
+      - type: archive
+        url: https://github.com/ExpiredPopsicle/SnekStudio/releases/download/v0.1.4/SnekStudio_Linux-x86_64_0.1.4.tar.gz
+        sha256: 27266fb3e280c38fe32c382f93c07f9972feb0e93baf21c9b81df58968a2a1b0
+        only-arches:
+          - x86_64
+      - type: archive
+        url: https://github.com/ExpiredPopsicle/SnekStudio/releases/download/nightly/SnekStudio_Linux-arm64_0.1.4.tar.gz
+        sha256: 810ed7f1fe5653d1f16c7d74b7f87dd576a5c7047cdbf66e2f8a7176a4544f2f
+        only-arches:
+          - aarch64
+      - type: file
+        path: com.snekstudio.Snekstudio.desktop
+      - type: file
+        path: com.snekstudio.Snekstudio.metainfo.xml
+      - type: file
+        url: https://github.com/ExpiredPopsicle/SnekStudio/blob/v0.1.4/Core/UI/Images/kiri_smug.png?raw=true
+        md5: 9bc60005961b0df54f23f3edd11a3bb9
+      - type: script
+        dest-filename: snekstudio.sh
+        commands:
+          - export SNEKSTUDIO_CONFIG_PATH=${XDG_CONFIG_HOME}
+          - export SNEKSTUDIO_CACHE_PATH=${XDG_CACHE_HOME}
+          - export SNEKSTUDIO_MODS_PATHS=/app/bin/Mods
+          - cd /app/bin && /app/bin/godot-runner
