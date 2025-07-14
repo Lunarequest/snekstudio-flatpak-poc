@@ -3,7 +3,6 @@ Name=SnekStudio
 GenericName=VTuber Software
 Comment=Open-source VTuber software
 Exec=/app/bin/snekstudio
-Path=/app/bin/
 Icon=com.snekstudio.Snekstudio
 Terminal=false
 Type=Application
