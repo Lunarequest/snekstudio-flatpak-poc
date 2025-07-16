@@ -12,18 +12,35 @@ finish-args:
   - --device=all
   - --share=network
 modules:
+  - name: magick
+    sources:
+      - type: archive
+        url: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.2-0.tar.gz
+        sha256: 03fe29e376b5938255b3fdb8d1f50515caa48055c0c2743faaeea52fc673a38b
+    cleanup:
+      - "*"
   - name: snekstudio
     buildsystem: "simple"
+    build-options:
+      append-path: /app/bin
     build-commands:
       - install -Dm644 snekstudio.pck ${FLATPAK_DEST}/bin/godot-runner.pck
-      - ls
       - install -Dm755 snekstudio.sh ${FLATPAK_DEST}/bin/snekstudio
       - cp -r Mods ${FLATPAK_DEST}/bin
       - cp -r SampleModels ${FLATPAK_DEST}/bin
     post-install:
       - install -D com.snekstudio.Snekstudio.desktop -t  /app/share/applications/
       - install -D com.snekstudio.Snekstudio.metainfo.xml -t /app/share/metainfo/
-      - install -D kiri_smug.png  /app/share/icons/hicolor/512x512/apps/$FLATPAK_ID.png
+      - magick convert kiri_smug.png -resize 32x32 32x32.png
+      - magick convert kiri_smug.png -resize 64x64 64x64.png
+      - magick convert kiri_smug.png -resize 128x128 128x128.png
+      - magick convert kiri_smug.png -resize 256x256 256x256.png
+      - magick convert kiri_smug.png -resize 512x512 512x512.png
+      - install -Dm644 32x32.png  /app/share/icons/hicolor/32x32/apps/$FLATPAK_ID.png
+      - install -Dm644 64x64.png  /app/share/icons/hicolor/64x64/apps/$FLATPAK_ID.png
+      - install -Dm644 128x128.png  /app/share/icons/hicolor/128x128/apps/$FLATPAK_ID.png
+      - install -Dm644 256x256.png  /app/share/icons/hicolor/256x256/apps/$FLATPAK_ID.png
+      - install -Dm644 512x512.png  /app/share/icons/hicolor/512x512/apps/$FLATPAK_ID.png
     sources:
       - type: archive
         url: https://github.com/ExpiredPopsicle/SnekStudio/releases/download/v0.1.4/SnekStudio_Linux-x86_64_0.1.4.tar.gz
@@ -41,7 +58,7 @@ modules:
         path: com.snekstudio.Snekstudio.metainfo.xml
       - type: file
         url: https://github.com/ExpiredPopsicle/SnekStudio/blob/v0.1.4/Core/UI/Images/kiri_smug.png?raw=true
-        md5: 9bc60005961b0df54f23f3edd11a3bb9
+        sha256: 7e3317ba3213859ad3dc723713e01604b27fa776fddbe1029d978b611a2ecc45
       - type: script
         dest-filename: snekstudio.sh
         commands:
