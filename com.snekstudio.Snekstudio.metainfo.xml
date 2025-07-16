@@ -35,6 +35,15 @@
     <screenshots>
         <screenshot type="default">
             <image>https://snekstudio.com/img/thumbsup_small.jpg</image>
+            <caption>sammy the default model holding a thumbs up</caption>
         </screenshot>
     </screenshots>
+    <releases>
+        <release version="v0.1.4" date="2025-06-17">
+            <description>
+                <p>Doing a release right before Offkai!</p>
+                <p>(Also because a bunch of stuff has been fixed since the last release.)</p>
+            </description>
+        </release>
+    </releases>
 </component>
