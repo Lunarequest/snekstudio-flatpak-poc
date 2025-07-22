@@ -12,9 +12,13 @@ finish-args:
 modules:
   - name: magick
     sources:
-      - type: archive
-        url: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.2-0.tar.gz
-        sha256: 03fe29e376b5938255b3fdb8d1f50515caa48055c0c2743faaeea52fc673a38b
+      - type: git
+        url: https://github.com/ImageMagick/ImageMagick.git
+        commit: 3fcd081c0278427fc0e8ac40ef75c0a1537792f7
+        tag: 7.1.2-0
+        x-checker-data:
+          type: git
+          tag-pattern: (\d+\.\d+\.\d+-\d+)
     cleanup:
       - "*"
   - name: snekstudio
@@ -46,11 +50,22 @@ modules:
         sha256: 27266fb3e280c38fe32c382f93c07f9972feb0e93baf21c9b81df58968a2a1b0
         only-arches:
           - x86_64
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/ExpiredPopsicle/SnekStudio/releases/latest
+          version-query: .tag_name | sub("^v"; "")
+          url-query: ".assets[] | select(.name==\"SnekStudio_Linux-x86_64_\" + $version + \".tar.gz\") | .browser_download_url"
+
       - type: archive
         url: https://github.com/ExpiredPopsicle/SnekStudio/releases/download/nightly/SnekStudio_Linux-arm64_0.1.4.tar.gz
         sha256: 810ed7f1fe5653d1f16c7d74b7f87dd576a5c7047cdbf66e2f8a7176a4544f2f
         only-arches:
           - aarch64
+        x-checker-data:
+          type: json
+          url: https://api.github.com/repos/ExpiredPopsicle/SnekStudio/releases/latest
+          version-query: .tag_name | sub("^v"; "")
+          url-query: ".assets[] | select(.name==\"SnekStudio_Linux-arm64_\" + $version + \".tar.gz\") | .browser_download_url"
       - type: file
         path: com.snekstudio.Snekstudio.desktop
       - type: file
@@ -61,7 +76,7 @@ modules:
       - type: script
         dest-filename: snekstudio-runner.sh
         commands:
-          - export SNEKSTUDIO_CONFIG_PATH=${XDG_CONFIG_HOME}
-          - export SNEKSTUDIO_CACHE_PATH=${XDG_CACHE_HOME}
-          - export SNEKSTUDIO_MODS_PATHS=/app/bin/Mods
+          - export SNEKSTUDIO_CONFIG_PATH=${XDG_CONFIG_HOME}/SnekStudio
+          - export SNEKSTUDIO_CACHE_PATH=${XDG_CACHE_HOME}/SnekStudio
+          - export SNEKSTUDIO_MDS_OPATHS="/app/bin/Mods:${XDG_CONFIG_HOME}/SnekStudio/mods"
           - cd /app/bin && /app/bin/snekstudio
