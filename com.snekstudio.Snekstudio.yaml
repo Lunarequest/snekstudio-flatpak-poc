@@ -54,10 +54,10 @@ modules:
           type: json
           url: https://api.github.com/repos/ExpiredPopsicle/SnekStudio/releases/latest
           version-query: .tag_name | sub("^v"; "")
-          url-query: ".assets[] | select(.name==\"SnekStudio_Linux-x86_64_\" + $version + \".tar.gz\") | .browser_download_url"
+          url-query: '.assets[] | select(.name=="SnekStudio_Linux-x86_64_" + $version + ".tar.gz") | .browser_download_url'
 
       - type: archive
-        url: https://github.com/ExpiredPopsicle/SnekStudio/releases/download/nightly/SnekStudio_Linux-arm64_0.1.4.tar.gz
+        url: https://github.com/ExpiredPopsicle/SnekStudio/releases/download/v0.1.4/SnekStudio_Linux-arm64_0.1.4.tar.gz
         sha256: 810ed7f1fe5653d1f16c7d74b7f87dd576a5c7047cdbf66e2f8a7176a4544f2f
         only-arches:
           - aarch64
@@ -65,7 +65,7 @@ modules:
           type: json
           url: https://api.github.com/repos/ExpiredPopsicle/SnekStudio/releases/latest
           version-query: .tag_name | sub("^v"; "")
-          url-query: ".assets[] | select(.name==\"SnekStudio_Linux-arm64_\" + $version + \".tar.gz\") | .browser_download_url"
+          url-query: '.assets[] | select(.name=="SnekStudio_Linux-arm64_" + $version + ".tar.gz") | .browser_download_url'
       - type: file
         path: com.snekstudio.Snekstudio.desktop
       - type: file
